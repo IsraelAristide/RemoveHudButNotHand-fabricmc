@@ -9,7 +9,9 @@
   "client": [
     "RemoveHandButNotHud",
     "RemoveHudButNotHand",
-    "RemoveBlockOutline"
+    "RemoveBlockOutline",
+    "RemoveBossBar",
+    "RemoveDebugHud"
   ],
   "injectors": {
     "defaultRequire": 1

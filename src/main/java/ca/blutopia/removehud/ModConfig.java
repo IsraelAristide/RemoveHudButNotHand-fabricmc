@@ -56,6 +56,14 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Category("HUD")
     public boolean HeldItemTooltip = true;
 
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Held item tooltip X offset")
+    public int HeldItemTooltipXOffset = 0;
+
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Held item tooltip Y offset")
+    public int HeldItemTooltipYOffset = 0;
+
     @ConfigEntry.Category("HUD")
     public boolean MountJumpbar = true;
 
@@ -119,7 +127,7 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Category("HUD")
     @Comment("Hunger bar")
-    public boolean HungerBar;
+    public boolean HungerBar = true;
 
     @ConfigEntry.Category("OFFSETS")
     @Comment("Hunger bar X offset")
@@ -136,7 +144,7 @@ public class ModConfig implements ConfigData {
     public boolean PortalOverlay = true;
 
     @ConfigEntry.Category("Overlays")
-    @Comment("Frost Overlay, Pumkin head, etc...")
+    @Comment("Frost Overlay, Pumpkin head, etc...")
     public boolean OtherOverlays = true;
 
     @ConfigEntry.Category("Overlays")
@@ -145,10 +153,37 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Category("HUD")
     public boolean ExpBar = true;
 
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Exp bar X offset")
+    public int ExpBarXOffset = 0;
+
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Exp Tooltip Y offset")
+    public int ExpBarYOffset = 0;
+
     @ConfigEntry.Category("HUD")
     public boolean Crosshairs = true;
 
     @ConfigEntry.Category("HUD")
     public boolean HotBar = true;
+
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Hotbar X offset")
+    public int HotBarXOffset = 0;
+
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Hotbar Y offset")
+    public int HotBarYOffset = 0;
+
+    @ConfigEntry.Category("HUD")
+    public boolean OverlayMessage = true;
+
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Overlay Message X offset")
+    public int OverlayMessageXOffset = 0;
+
+    @ConfigEntry.Category("OFFSETS")
+    @Comment("Overlay Message Y offset")
+    public int OverlayMessageYOffset = 0;
 
 }

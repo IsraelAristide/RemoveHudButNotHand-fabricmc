@@ -41,5 +41,14 @@
   "text.autoconfig.removehud.option.AirXOffset" : "Oxygen bar X Offset",
   "text.autoconfig.removehud.option.AirYOffset" : "Oxygen bar Y Offset",
   "text.autoconfig.removehud.option.FoodXOffset" : "Hunger bar X Offset",
-  "text.autoconfig.removehud.option.FoodYOffset" : "Hunger bar Y Offset"
+  "text.autoconfig.removehud.option.FoodYOffset" : "Hunger bar Y Offset",
+  "text.autoconfig.removehud.option.OverlayMessage" : "Overlay Message",
+  "text.autoconfig.removehud.option.OverlayMessageXOffset" : "Overlay message X Offset",
+  "text.autoconfig.removehud.option.OverlayMessageYOffset" : "Overlay message Y Offset",
+  "text.autoconfig.removehud.option.HotBarXOffset" : "Hotbar X Offset",
+  "text.autoconfig.removehud.option.HotBarYOffset" : "Hotbar Y Offset",
+  "text.autoconfig.removehud.option.HeldItemTooltipXOffset" : "Held Item Tooltip X Offset",
+  "text.autoconfig.removehud.option.HeldItemTooltipYOffset" : "Held Item Tooltip Y Offset",
+  "text.autoconfig.removehud.option.ExpBarXOffset" : "EXP Bar X Offset",
+  "text.autoconfig.removehud.option.ExpBarYOffset" : "EXP Bar Y Offset"
 }

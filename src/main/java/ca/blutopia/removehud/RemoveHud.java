@@ -1,5 +1,7 @@
 package ca.blutopia.removehud;
 
+import ca.blutopia.removehud.config.ModConfig;
+import ca.blutopia.removehud.gui.HudEditorScreen;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -18,8 +20,11 @@ public class RemoveHud implements ClientModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LogManager.getLogger("removehud");
 
+	public static HUDManager HudManagerInstance;
+
 	private KeyBinding keynmap;
 	private KeyBinding keynmap2;
+	private KeyBinding keynmap3;
 
 	@Override
 	public void onInitializeClient() {
@@ -27,17 +32,22 @@ public class RemoveHud implements ClientModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		ModConfig.init();
+		HudManagerInstance = new HUDManager();
 
-		keynmap = new KeyBinding("key.removehud.toggle_mod", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F7,"key.category.removehud");
-		keynmap2 = new KeyBinding("key.removehud.open_settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F8, "key.category.removehud");
+		keynmap = new KeyBinding("key.removehud.toggle_mod", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F1,"key.category.removehud");
+		keynmap2 = new KeyBinding("key.removehud.open_settings", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F7, "key.category.removehud");
+		keynmap3 = new KeyBinding("key.removehud.open_editor", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F8, "key.category.removehud");
 
 		KeyBindingHelper.registerKeyBinding(keynmap);
 		KeyBindingHelper.registerKeyBinding(keynmap2);
+		KeyBindingHelper.registerKeyBinding(keynmap3);
 
 		ClientTickEvents.END_CLIENT_TICK.register(this::removeHudToggleListener);
 
 		ClientTickEvents.END_CLIENT_TICK.register(this::settingsMenuListener);
+
+		ClientTickEvents.END_CLIENT_TICK.register(this::editorMenuListener);
+
 
 	}
 
@@ -49,8 +59,16 @@ public class RemoveHud implements ClientModInitializer {
 	}
 	private void removeHudToggleListener(MinecraftClient client) {
 		while (keynmap.wasPressed()) {
-			ModConfig.INSTANCE.removeHud = !ModConfig.INSTANCE.removeHud;
+			HudManagerInstance.ConfigInstance.removeHud = !HudManagerInstance.ConfigInstance.removeHud;
 		}
+	}
+	private void editorMenuListener(MinecraftClient client) {
+
+		while (keynmap3.wasPressed()) {
+			Screen editor = new HudEditorScreen();
+			client.setScreen(editor);
+		}
+
 	}
 
 }

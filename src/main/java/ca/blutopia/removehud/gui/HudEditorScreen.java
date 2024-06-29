@@ -1,19 +1,14 @@
 package ca.blutopia.removehud.gui;
 
-import ca.blutopia.removehud.HUDManager;
 import ca.blutopia.removehud.RemoveHud;
 import ca.blutopia.removehud.access.IEditorInGameHud;
 import ca.blutopia.removehud.config.HUDItems;
-import ca.blutopia.removehud.config.OriginPoint;
-import ca.blutopia.removehud.mixin.RemoveHudButNotHand;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.text.Text;
-
-import java.awt.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -26,7 +21,28 @@ public class HudEditorScreen extends Screen {
     // CyclingButtonWidget<OriginPoint> widg;
     CyclingButtonWidget<HUDItems> wid2;
     long _windowHandle;
-    private final SelectedItem _selected;
+    private SelectedItem _selected;
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+
+        switch (keyCode) {
+            case GLFW_KEY_W:
+                _moveX(-1);
+                break;
+            case GLFW_KEY_S:
+                _moveX(1);
+                break;
+            case GLFW_KEY_A:
+                _moveY(-1);
+                break;
+            case GLFW_KEY_D:
+                _moveY(1);
+                break;
+        }
+
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
 
     public HudEditorScreen() {
 
@@ -94,7 +110,7 @@ public class HudEditorScreen extends Screen {
             return Text.of(x.name());
         }).initially(_selected.getSelected())
                 .values(HUDItems.values())
-                .build(20, 80, 120, 20, Text.of("Hud Item"), (sender,value) -> {
+                .build((MinecraftClient.getInstance().getWindow().getScaledWidth()/2)-60, 0, 120, 20, Text.of("Hud Item"), (sender,value) -> {
                     _selected.setSelected(value);
 //                    try {
 //                        widg.setValue(_selected.getOrigin());
@@ -108,34 +124,36 @@ public class HudEditorScreen extends Screen {
 
     }
 
-    private void MoveSelectedItemLeft(ButtonWidget button) {
-        try {
-            _selected.MoveX(-1);
-        } catch (NoSuchMethodException e) {
-            return;
-        }
+    public void MoveSelectedItemLeft(ButtonWidget button) {
+        _moveY(-1);
     }
-    private void MoveSelectedItemRight(ButtonWidget button) {
+
+    private void _moveX(int offset) {
         try {
-            _selected.MoveX(1);
+            _selected.MoveY(offset);
         } catch (NoSuchMethodException e) {
             return;
         }
     }
 
-    private void MoveSelectedItemDown(ButtonWidget button) {
+    public void MoveSelectedItemRight(ButtonWidget button) {
+        _moveY(1);
+    }
+
+    public void MoveSelectedItemDown(ButtonWidget button) {
+        _moveX(1);
+    }
+
+    private void _moveY(int offset) {
         try {
-            _selected.MoveY(-1);
+            _selected.MoveX(offset);
         } catch (NoSuchMethodException e) {
             return;
         }
     }
-    private void MoveSelectedItemUp(ButtonWidget button) {
-        try {
-            _selected.MoveY(1);
-        } catch (NoSuchMethodException e) {
-            return;
-        }
+
+    public void MoveSelectedItemUp(ButtonWidget button) {
+        _moveX(-1);
     }
 
 
@@ -144,10 +162,10 @@ public class HudEditorScreen extends Screen {
 
         super.init();
         RemoveHud.HudManagerInstance.ConfigInstance.EnableEditor = true;
-        addDrawableChild(moveLeftButton);
-        addDrawableChild(moveRightButton);
-        addDrawableChild(moveDownButton);
-        addDrawableChild(moveUpButton);
+//        addDrawableChild(moveLeftButton);
+//        addDrawableChild(moveRightButton);
+//        addDrawableChild(moveDownButton);
+//        addDrawableChild(moveUpButton);
 
         // addDrawableChild(widg);
         addDrawableChild(wid2);

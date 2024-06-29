@@ -23,7 +23,7 @@ public class HudEditorScreen extends Screen {
     ButtonWidget moveRightButton;
     ButtonWidget moveUpButton;
     ButtonWidget moveDownButton;
-    CyclingButtonWidget<OriginPoint> widg;
+    // CyclingButtonWidget<OriginPoint> widg;
     CyclingButtonWidget<HUDItems> wid2;
     long _windowHandle;
     private SelectedItem _selected;
@@ -36,7 +36,7 @@ public class HudEditorScreen extends Screen {
 
         assert this.client != null;
 
-        _selected = new SelectedItem(HUDItems.Hp);
+        _selected = new SelectedItem(HUDItems.Food);
 
         moveLeftButton = ButtonWidget.builder(Text.of("<"), this::MoveSelectedItemLeft)
                 .dimensions(
@@ -65,29 +65,29 @@ public class HudEditorScreen extends Screen {
                         20, 20
                 )
                 .build();
-
-        try {
-            widg = new CyclingButtonWidget.Builder<OriginPoint>(x -> {
-                return switch (x) {
-
-                    case ORIGIN -> Text.of("origin");
-                    case TOPLEFT -> Text.of("topleft");
-                    case BOTTOMLEFFT -> Text.of("bottomleft");
-                    case TOPRIGHT -> Text.of("topright");
-                    case BOTTONRIGHT -> Text.of("bottomright");
-                };
-            }).initially(_selected.getOrigin())
-                    .values(OriginPoint.values())
-                    .build(20, 30, 120, 20, Text.of("Origin"), (sender, value) -> {
-                        try {
-                            _selected.setOrigin(value);
-                        } catch (NoSuchMethodException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+//
+//        try {
+//            widg = new CyclingButtonWidget.Builder<OriginPoint>(x -> {
+//                return switch (x) {
+//
+//                    case ORIGIN -> Text.of("origin");
+//                    case TOPLEFT -> Text.of("topleft");
+//                    case BOTTOMLEFFT -> Text.of("bottomleft");
+//                    case TOPRIGHT -> Text.of("topright");
+//                    case BOTTONRIGHT -> Text.of("bottomright");
+//                };
+//            }).initially(_selected.getOrigin())
+//                    .values(OriginPoint.values())
+//                    .build(20, 30, 120, 20, Text.of("Origin"), (sender, value) -> {
+//                        try {
+//                            _selected.setOrigin(value);
+//                        } catch (NoSuchMethodException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    });
+//        } catch (NoSuchMethodException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         wid2 = new CyclingButtonWidget.Builder<HUDItems>(x->{
@@ -96,11 +96,11 @@ public class HudEditorScreen extends Screen {
                 .values(HUDItems.values())
                 .build(20, 80, 120, 20, Text.of("Hud Item"), (sender,value) -> {
                     _selected.setSelected(value);
-                    try {
-                        widg.setValue(_selected.getOrigin());
-                    } catch (NoSuchMethodException e) {
-                        throw new RuntimeException(e);
-                    }
+//                    try {
+//                        widg.setValue(_selected.getOrigin());
+//                    } catch (NoSuchMethodException e) {
+//                        throw new RuntimeException(e);
+//                    }
                 });
 
 
@@ -149,7 +149,7 @@ public class HudEditorScreen extends Screen {
         addDrawableChild(moveDownButton);
         addDrawableChild(moveUpButton);
 
-        addDrawableChild(widg);
+        // addDrawableChild(widg);
         addDrawableChild(wid2);
 
     }
@@ -237,7 +237,11 @@ public class HudEditorScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         assert client != null;
-        ((IEditorInGameHud) client.inGameHud).EditorMode(context);
+        try {
+            ((IEditorInGameHud) client.inGameHud).EditorMode(context);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

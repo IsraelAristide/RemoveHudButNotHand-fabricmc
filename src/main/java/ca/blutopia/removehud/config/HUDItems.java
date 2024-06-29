@@ -8,5 +8,6 @@ public enum HUDItems {
     Hp,
     HotBar,
     Autosave,
-    OverlayMessage
+    Expbar,
+    Crosshairs
 }

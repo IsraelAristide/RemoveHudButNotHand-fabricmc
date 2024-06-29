@@ -50,7 +50,6 @@ public abstract class RemoveHudButNotHand implements IEditorInGameHud {
     private static final ModConfig ModConfig = RemoveHud.HudManagerInstance.ConfigInstance;
     private static final HUDManager HUD_MANAGER = RemoveHud.HudManagerInstance;
 
-
     private void renderEditorAirBar(DrawContext context) throws NoSuchFieldException, IllegalAccessException {
         var playerEntity = getCameraPlayer();
         int t = getHeartCount(playerEntity);
@@ -95,12 +94,10 @@ public abstract class RemoveHudButNotHand implements IEditorInGameHud {
         float f = Math.max((float)playerEntity.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH), (float)Math.max(ja, ph));
         int p = MathHelper.ceil((f + (float)of) / 2.0F / 10.0F);
         var i = context.getScaledWindowHeight() - 39;
-        var j = p;
         int q = Math.max(10 - (p - 2), 3);
-        int k = q;
         int x = context.getScaledWindowWidth() / 2 - 91;
         RenderSystem.enableBlend();
-        int m = i - (j - 1) * k - 10;
+        int m = i - (p - 1) * q - 10;
 
         for(int n = 0; n < 10; ++n) {
             int o = x + n * 8;
@@ -120,9 +117,6 @@ public abstract class RemoveHudButNotHand implements IEditorInGameHud {
 
         autosaveIndicatorAlpha = 1.0F;
     }
-
-
-
 
     @Inject(method = "renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V", at = @At("HEAD"), cancellable = true)
     public void renderHotBar(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {

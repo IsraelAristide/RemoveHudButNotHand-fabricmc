@@ -26,7 +26,7 @@ public class HudEditorScreen extends Screen {
     // CyclingButtonWidget<OriginPoint> widg;
     CyclingButtonWidget<HUDItems> wid2;
     long _windowHandle;
-    private SelectedItem _selected;
+    private final SelectedItem _selected;
 
     public HudEditorScreen() {
 
@@ -183,7 +183,7 @@ public class HudEditorScreen extends Screen {
             return false;
         }
 
-        System.out.println(deltaX + " / " + deltaY);
+        // System.out.println(deltaX + " / " + deltaY);
 
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 

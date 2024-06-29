@@ -2,8 +2,10 @@ package ca.blutopia.removehud.gui;
 
 import ca.blutopia.removehud.HUDManager;
 import ca.blutopia.removehud.RemoveHud;
+import ca.blutopia.removehud.access.IEditorInGameHud;
 import ca.blutopia.removehud.config.HUDItems;
 import ca.blutopia.removehud.config.OriginPoint;
+import ca.blutopia.removehud.mixin.RemoveHudButNotHand;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -24,7 +26,6 @@ public class HudEditorScreen extends Screen {
     CyclingButtonWidget<OriginPoint> widg;
     CyclingButtonWidget<HUDItems> wid2;
     long _windowHandle;
-
     private SelectedItem _selected;
 
     public HudEditorScreen() {
@@ -142,6 +143,7 @@ public class HudEditorScreen extends Screen {
     protected void init() {
 
         super.init();
+        RemoveHud.HudManagerInstance.ConfigInstance.EnableEditor = true;
         addDrawableChild(moveLeftButton);
         addDrawableChild(moveRightButton);
         addDrawableChild(moveDownButton);
@@ -149,6 +151,7 @@ public class HudEditorScreen extends Screen {
 
         addDrawableChild(widg);
         addDrawableChild(wid2);
+
     }
 
     @Override
@@ -233,6 +236,13 @@ public class HudEditorScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
+        assert client != null;
+        ((IEditorInGameHud) client.inGameHud).EditorMode(context);
+    }
+
+    @Override
+    protected void renderDarkening(DrawContext context) {
+        return;
     }
 
     @Override

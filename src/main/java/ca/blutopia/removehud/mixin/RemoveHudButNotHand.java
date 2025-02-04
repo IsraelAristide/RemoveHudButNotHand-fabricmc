@@ -28,8 +28,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 1)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 2)
     private int modifyHotbarX(int value) {
         return value + ModConfig.INSTANCE.HotBarXOffset;
     }
@@ -38,8 +38,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderHotbar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/client/render/RenderTickCounter;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 2)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 3)
     private int modifyHotbarY(int value) {
         return value + ModConfig.INSTANCE.HotBarYOffset;
     }
@@ -137,8 +137,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderArmor(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIII)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 1)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 2)
     private static int modifyArmorBarX(int value) {
         return value + ModConfig.INSTANCE.ArmorXOffset;
     }
@@ -147,8 +147,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderArmor(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;IIII)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 2)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 3)
     private static int modifyArmorBarY(int value) {
         return value + ModConfig.INSTANCE.ArmorYOffset;
     }
@@ -164,8 +164,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderFood(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;II)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 1)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 2)
     private int modifyFoodBarX(int value) {
         return value + ModConfig.INSTANCE.FoodXOffset;
     }
@@ -174,23 +174,37 @@ public abstract class RemoveHudButNotHand {
             method = "renderFood(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;II)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 2)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 3)
     private int modifyFoodBarY(int value) {
         return value + ModConfig.INSTANCE.FoodYOffset;
     }
 
-    @Redirect(method = "renderStatusBars(Lnet/minecraft/client/gui/DrawContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 0))
-    private void renderAirBubbles(DrawContext instance, Identifier texture, int x, int y, int width, int height) {
-        if (ModConfig.INSTANCE.AirBar) {
-            instance.drawGuiTexture(texture, x + ModConfig.INSTANCE.AirXOffset, y + ModConfig.INSTANCE.AirYOffset, width, height);
+    @Inject(method = "renderAirBubbles(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;III)V", at = @At("HEAD"), cancellable = true)
+    public void renderAirBubbles(DrawContext context, PlayerEntity player, int heartCount, int top, int left, CallbackInfo ci) {
+        if (!ModConfig.INSTANCE.AirBar) {
+            ci.cancel();
         }
     }
-    @Redirect(method = "renderStatusBars(Lnet/minecraft/client/gui/DrawContext;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 1))
-    private void renderBurstingAirBubble(DrawContext instance, Identifier texture, int x, int y, int width, int height) {
-        if (ModConfig.INSTANCE.AirBar) {
-            instance.drawGuiTexture(texture, x + ModConfig.INSTANCE.AirXOffset, y + ModConfig.INSTANCE.AirYOffset, width, height);
-        }
+
+    @ModifyArg(
+            method = "renderAirBubbles(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;III)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 2)
+    private int modifyAirBubblesX(int value) {
+        return value + ModConfig.INSTANCE.AirXOffset;
+    }
+
+    @ModifyArg(
+            method = "renderAirBubbles(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/entity/player/PlayerEntity;III)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 3)
+    private int modifyAirBubblesY(int value) {
+        return value + ModConfig.INSTANCE.AirYOffset;
     }
 
     @Inject(method = "renderMountHealth(Lnet/minecraft/client/gui/DrawContext;)V", at = @At("HEAD"), cancellable = true)
@@ -294,8 +308,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderExperienceBar(Lnet/minecraft/client/gui/DrawContext;I)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 1)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 2)
     private int modifyExperienceBarBackgroundX(int value) {
         return value + ModConfig.INSTANCE.ExpBarXOffset;
     }
@@ -304,8 +318,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderExperienceBar(Lnet/minecraft/client/gui/DrawContext;I)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"),
-            index = 2)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V"),
+            index = 3)
     private int modifyExperienceBarBackgroundY(int value) {
         return value + ModConfig.INSTANCE.ExpBarYOffset;
     }
@@ -314,8 +328,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderExperienceBar(Lnet/minecraft/client/gui/DrawContext;I)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIIIIIII)V"),
-            index = 5)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIIIIIII)V"),
+            index = 6)
     private int modifyExperienceBarForegroundX(int value) {
         return value + ModConfig.INSTANCE.ExpBarXOffset;
     }
@@ -324,8 +338,8 @@ public abstract class RemoveHudButNotHand {
             method = "renderExperienceBar(Lnet/minecraft/client/gui/DrawContext;I)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIIIIIII)V"),
-            index = 6)
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIIIIIII)V"),
+            index = 7)
     private int modifyExperienceBarForegroundY(int value) {
         return value + ModConfig.INSTANCE.ExpBarYOffset;
     }
